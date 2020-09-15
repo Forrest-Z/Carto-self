@@ -1,0 +1,7 @@
+
+ProbabilityParams:
+  lowBound: 0.1
+  highBound: 0.9
+  hitOdd: 1.2222
+  missOdd: 0.8181812
+  unknown: 2.0

@@ -1,0 +1,6 @@
+CorrelativeScanMatcher:
+  UsingEffectiveMaxRagne: true
+  PixelSize: 0.05
+  EffectiveMaxRange: 15
+  RotationWindowSize: 0.1
+  TranslationWindowSize: 0.2

@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-05 15:39:10
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-16 07:21:05
+ * @LastEditTime: 2020-09-25 07:06:16
  * @Description: 文件用于定义 地图的类型 目前之后 概率栅格地图
  */
 
@@ -35,6 +35,7 @@ namespace LwlSLAM
     /**
      * @brief 不能进行单独使用，请结合ProbabilityGridMap 进行使用
      */
+    // TODO gird_size_ 需要被添加进MapLimits
     class MapLimits
     {
         public:
@@ -51,6 +52,8 @@ namespace LwlSLAM
         bool contain(T xy)const;
 
         private:
+
+        double gird_size_;
 
         Eigen::Vector2i scaleXY_;
     };

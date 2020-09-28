@@ -35,7 +35,7 @@ namespace LwlSLAM
         
         GridMapGenerator2d()=delete;
 
-        GridMapGenerator2d(const std::string & configFile):configFile_(configFile_){}
+        explicit GridMapGenerator2d(const std::string & configFile):configFile_(configFile_){}
 
         void pipeline(sensor_msgs::LaserScan& laserInfo,Eigen::Vector3f pose);
 
@@ -50,6 +50,12 @@ namespace LwlSLAM
         else
         return submapPool_.back();
         }
+
+        const unsigned int getPoolSize()const
+        {
+            return submapPool_.size();
+        }
+
 
         private:
 

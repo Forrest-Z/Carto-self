@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-08 16:07:17
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-10 15:19:28
+ * @LastEditTime: 2020-09-26 09:50:39
  * @Description: common 文件夹用于处理一些常用的函数  range_to_xyz 主要是用于处理 从 range 到Eigen 库内容的转换
  */
 
@@ -110,5 +110,6 @@ namespace LwlSLAM
 
         output(OutputType(integer(input(0)/interval),integer(input(1)/interval)));
     }
+
 } // namespace LwlSLAM
 

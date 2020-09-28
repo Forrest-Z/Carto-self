@@ -30,7 +30,7 @@ namespace LwlSLAM
         
         CorrelativeScanMatcher2d()=delete;
 
-        CorrelativeScanMatcher2d(std::string & configFile):configFile_(configFile){
+        CorrelativeScanMatcher2d(const std::string & configFile):configFile_(configFile){
             CHECK(initialFlag_ ==false);
         }
 
@@ -62,7 +62,7 @@ namespace LwlSLAM
 
         bool initialFlag_;
         bool usingEffectiveMaxRange_;
-        std::string configFile_;
+        const std::string configFile_;
 
         std::vector<float> tmpMidProductAngleOffset_;
         std::vector<Eigen::Array2i> tmpMidProductTranslationCandidates_;

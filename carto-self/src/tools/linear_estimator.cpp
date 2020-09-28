@@ -2,14 +2,14 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-11 14:18:29
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-11 14:54:13
+ * @LastEditTime: 2020-09-29 07:06:08
  * @Description: LinearEstimator 函数定义
  */
 
 #pragma once
 
 #include <iostream>
-
+#include <glog/logging.h>
 #include "linear_estimator.hpp"
 
 namespace LwlSLAM
@@ -37,12 +37,18 @@ namespace LwlSLAM
         deltaTime += static_cast<float>(poseInfo_.sec - poseArray_.back().sec);
         deltaTime += static_cast<float>(poseInfo_.nsec - poseArray_.back().nsec)*pow10(-9);
 
-        poseArray_.back().velocity = deltaDistance/deltaTime;
+        poseInfo_.velocity = deltaDistance/deltaTime;
         poseArray_.push_back(poseInfo_);
     }
 
     PoseInfo LinearEstimator::predictPose(uint32_t sec, uint32_t nsec)
     {
+
+        if(poseArray_.size() <2)
+        {
+            LOG(WARNING)<<" in predicPose : try to predicPose from a empty or only1 pose array";
+            return PoseInfo();
+        }
         CHECK(poseArray_.back().sec<=sec);
         if(poseArray_.back().sec == sec)
         CHECK(poseArray_.back().nsec<nsec);
@@ -56,7 +62,7 @@ namespace LwlSLAM
         tmp.nsec = nsec;
         tmp.pose = tmp.pose + tmp.velocity*deltaTime;
         tmp.velocity.Zero();
-        tmp.seq =0;
+        tmp.seq =poseArray_.size()-1;
         
         return tmp;
 

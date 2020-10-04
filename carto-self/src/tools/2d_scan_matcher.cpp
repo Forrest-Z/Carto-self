@@ -2,16 +2,16 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-04 15:04:02
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-29 07:30:31
+ * @LastEditTime: 2020-10-02 18:57:07
  * @Description: CorrelativeScanMatcher 函数实现
  */
-#pragma once
-#include "2d_scan_matcher.hpp"
+
+#include "tools/scan_matcher/2d_scan_matcher.hpp"
 #include "common/common.hpp"
 
 namespace LwlSLAM
 {
-    auto CorrelativeScanMatcher2d::pipeline(const ProbabilityGridMap & submap, 
+    LwlSLAM::MatchResult CorrelativeScanMatcher2d::pipeline(const ProbabilityGridMap & submap, 
     const Eigen::Vector3f & posePrediction, const sensor_msgs::LaserScan & laserInfo){
         if(!initialFlag_)
         {
@@ -34,7 +34,7 @@ namespace LwlSLAM
 
     void CorrelativeScanMatcher2d::initial(const sensor_msgs::LaserScan & laserInfo)
     {
-        YAML::Node config = YAML::LoadFile(configFile_.c_str());
+        YAML::Node config = YAML::LoadFile(configFile_);
         usingEffectiveMaxRange_ = config["CorrelativeScanMatcher"]["UsingEffectiveMaxRagne"].as<bool>();
         searchWindowParams_.pixelSize = config["CorrelativeScanMatcher"]["PixelSize"].as<float>();
         searchWindowParams_.translationWindowSize = config["CorrelativeScanMatcher"]["TranslationWindowSize"].as<float>();
@@ -44,6 +44,11 @@ namespace LwlSLAM
         searchWindowParams_.predictEffectiveMaxRange = config["CorrelativeScanMatcher"]["EffectiveMaxRange"].as<float>();
 
         generateSearchWindow(laserInfo);
+    }
+
+    void CorrelativeScanMatcher2d::dataPrepare()
+    {
+        
     }
 
     void CorrelativeScanMatcher2d::generateSearchWindow(const sensor_msgs::LaserScan & laserInfo)

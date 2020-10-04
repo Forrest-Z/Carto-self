@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-08 16:07:17
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-26 09:50:39
+ * @LastEditTime: 2020-10-03 17:11:04
  * @Description: common 文件夹用于处理一些常用的函数  range_to_xyz 主要是用于处理 从 range 到Eigen 库内容的转换
  */
 
@@ -11,6 +11,7 @@
 #include <vector>
 #include <functional>
 
+#include "glog/logging.h"
 #include "Eigen/Eigen"
 #include "sensor_msgs/LaserScan.h"
 #include "so3.hpp"
@@ -18,7 +19,7 @@
 namespace LwlSLAM
 {
 
-    bool checkLimit(float max,float min, float range)
+    inline bool checkLimit(float max,float min, float range)
     {
         return (range<max)&&(range>min);
     };
@@ -61,40 +62,19 @@ namespace LwlSLAM
         }
     };
 
-
-    template <typename T>
-    std::function<int(T)> integrateType(int i)
-    {
-        switch(i)
-        { case 1:
-            return std::ceil;
-            break;
-          case 2:
-            return std::round;
-            break;
-          case 3:
-            return std::floor;
-            break;
-          default:
-            return std::ceil;  
-        }
-    }
-
     /**
      * @description: 这个函数主要是用于离散化 ， 为了适用于多种Eigen的数据类型，所以使用模板。但是仅适用于Vector3<Scalar>
      * @param {type} 
      * @return {type} 
      */
     template<typename Type,typename OutputType>
-    void Discretize(const std::vector<Type>& input,std::vector<OutputType> & output, float interval,int type = 1)
+    void Discretize(const std::vector<Type>& input,std::vector<OutputType> & output, float interval)
     {
         output.reserve(input.size());
 
-        auto integer = integrateType<double>(type);
-
-        for(auto vector:input)
+        for(auto & vector:input)
         {
-            output.push_back(OutputType(integer(vector(0)/interval),integer(vector(1))/interval)));
+            output.push_back(OutputType(std::ceil(vector(0)/interval),std::ceil(vector(1)/interval)));
         }
     }
 
@@ -102,13 +82,11 @@ namespace LwlSLAM
      * @description:  仅适用于Eigen::Vector<Scalar> -> Matrix<2,1,Scalar>
      */
     template<typename Type,typename OutputType>
-    void Discretize(const Type input, OutputType & output, float interval,int type =1)
+    void Discretize(const Type input, OutputType & output, float interval)
     {
         output.Zero();
 
-        auto integer = integrateType<double>(type);
-
-        output(OutputType(integer(input(0)/interval),integer(input(1)/interval)));
+        output = OutputType(std::ceil(input(0)/interval),std::ceil(input(1)/interval));
     }
 
 } // namespace LwlSLAM

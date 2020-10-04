@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-11 12:57:54
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-27 07:12:39
+ * @LastEditTime: 2020-10-02 13:12:31
  * @Description: 位姿推断基类
  */
 
@@ -13,7 +13,7 @@
 
 #include "Eigen/Eigen"
 
-#include "matching_structure.hpp"
+#include "tools/structure/matching_structure.hpp"
 
 namespace LwlSLAM
 {

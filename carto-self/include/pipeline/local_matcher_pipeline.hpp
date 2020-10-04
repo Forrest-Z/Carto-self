@@ -49,9 +49,9 @@ namespace LwlSLAM
         
         void match();
 
-        void laserinfoCb(sensor_msgs::LaserScan::ConstPtr msg);
+        void laserinfoCb(const sensor_msgs::LaserScan::ConstPtr  msg);
 
-        void imuinfoCb(sensor_msgs::ImuConstPtr msg);
+        void imuinfoCb(const sensor_msgs::ImuConstPtr  msg);
 
         bool initialFlag_;
 
@@ -63,6 +63,7 @@ namespace LwlSLAM
         ros::NodeHandle nh_;
         ros::Subscriber laserInfoSub_;
         ros::Subscriber ImuInfoSub_;
+        ros::Publisher  posePub_;
         std::deque<sensor_msgs::LaserScan> laserScanPool_;
         std::deque<sensor_msgs::Imu> imuInfoPool_;
         sensor_msgs::LaserScan currentScan_;

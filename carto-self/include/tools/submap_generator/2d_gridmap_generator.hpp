@@ -16,8 +16,8 @@
 #include "sensor_msgs/LaserScan.h"
 #include "yaml-cpp/yaml.h"
 
-#include "common.hpp"
-#include "mapping_structure.hpp"
+#include "common/common.hpp"
+#include "tools/structure/mapping_structure.hpp"
 
 
 namespace LwlSLAM

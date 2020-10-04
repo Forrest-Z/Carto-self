@@ -2,14 +2,12 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-04 15:02:56
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-10 08:59:04
+ * @LastEditTime: 2020-10-03 17:12:26
  * @Description: 定义GridMapGenerator2d 的成员函数
  */
 
-#pragma once
 
-#include "2d_gridmap_generator.hpp"
-#include "common/common.hpp"
+#include "tools/submap_generator/2d_gridmap_generator.hpp"
 
 namespace LwlSLAM
 {

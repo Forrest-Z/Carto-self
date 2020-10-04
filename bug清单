@@ -1,0 +1,10 @@
+对应 BugFreePlan 的序号
+2020/10/4 第一次编译通过暴露的问题
+
+1. typename 如何定义防止 linking error
+
+2. class 到底如何编写防止 multiple definition 和 undef_ref
+
+3. typename 的作用：是告诉编译器 这是一个类别而不是一个对象
+   typename 在模板编程的时候非常重要，很容易出现编译器根本不知道这是个什么东西的情况
+   typedef 是创造一个别名

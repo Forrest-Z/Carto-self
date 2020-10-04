@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-10 10:44:27
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-11 13:23:53
+ * @LastEditTime: 2020-10-03 10:28:11
  * @Description: 用于ScanMatcher 的结构
  */
 #pragma once 
@@ -52,11 +52,13 @@ namespace LwlSLAM
             nsec = 0;
             pose.Zero();
             velocity.Zero();
-        }
+        };
         uint32_t seq;
         uint32_t sec;
         uint32_t nsec;
         Eigen::Vector3f pose;
         Eigen::Vector3f velocity;
-    }
+    };
+
+
 }

@@ -40,7 +40,9 @@ find_package(glog REQUIRED)
 find_package(Ceres REQUIRED)
 
 
-
+find_package(GTest REQUIRED)
+find_package(Threads REQUIRED)
+include_directories(${GTEST_INCLUDE_DIRS})
 
 
 
@@ -122,13 +124,15 @@ include_directories("include/tools/down_sampler")
 
 ## 只有一个include的时候 搜索不到include 以下的文件夹内的内容，所以一直显示找不到.hpp文件
 include_directories(
+  include
   ${YAML_CPP_INCLUDE_DIR}
 )
 include_directories(${CERES_INCLUDE_DIRS})
 file(GLOB_RECURSE ALL_SRC src/*.cpp)
 file(GLOB_RECURSE NODE_SRC src/*_node.cpp)
+file(GLOB_RECURSE TEST_SRC src/*_test.cpp)
 list(REMOVE_ITEM ALL_SRC ${NODE_SRC})
-
+list(REMOVE_ITEM ALL_SRC ${TEST_SRC})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -144,6 +148,20 @@ add_executable(raw_data_processor_node src/node/data_processor_node.cpp ${ALL_SR
 
 ## ROS_BAG COVERT NODE
 add_executable(rosbag_convert src/tools/rosbag_convert_node.cpp)
+
+
+add_executable(linear_estimator_test src/test/linear_estimator_test.cpp ${ALL_SRC}
+
+)
+target_link_libraries(linear_estimator_test 
+${GTEST_BOTH_LIBRARIES} 
+${CMAKE_THREAD_LIBS_INIT}
+${catkin_LIBRARIES}
+${YAML_CPP_LIBRARIES}
+glog
+)
+
+
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
 ## target back to the shorter version for ease of user use
@@ -160,6 +178,7 @@ target_link_libraries(raw_data_processor_node
   ${RAW}
   ${catkin_LIBRARIES}
   ${YAML_CPP_LIBRARIES}
+  glog
 )
 target_link_libraries(rosbag_convert 
   ${catkin_LIBRARIES}

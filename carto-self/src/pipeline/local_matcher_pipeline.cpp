@@ -39,10 +39,10 @@ namespace LwlSLAM
         std::string laserTopic,imuTopic;
         nh_.param("laserTopic",laserTopic,std::string(""));
         nh_.param("imuTopic",imuTopic,std::string(""));
-        laserInfoSub_ = nh_.subscribe<sensor_msgs::LaserScan>(laserTopic.c_str(),
-        300,boost::bind(&LidarMatcher::laserinfoCb,this));
-        ImuInfoSub_ = nh_.subscribe<sensor_msgs::Imu>(imuTopic,
-        1000,boost::bind(&LidarMatcher::imuinfoCb,this));
+        laserInfoSub_ = nh_.subscribe(laserTopic.c_str(),
+        300,&LidarMatcher::laserinfoCb,this);
+        ImuInfoSub_ = nh_.subscribe(imuTopic,
+        1000,&LidarMatcher::imuinfoCb,this);
 
         laserScanPool_.clear();
         imuInfoPool_.clear();
@@ -90,12 +90,12 @@ namespace LwlSLAM
 
     // TODO 这个地方一定会限制算法，因为会进行一次赋值拷贝
     //      而且没有一个mutex 在多线程的时候 一定是不安全的
-    void LidarMatcher::laserinfoCb(sensor_msgs::LaserScan::ConstPtr msg)
+    void LidarMatcher::laserinfoCb(const sensor_msgs::LaserScan::ConstPtr  msg)
     {
         laserScanPool_.push_back(*msg);
     }
     
-    void LidarMatcher::imuinfoCb(sensor_msgs::ImuConstPtr msg)
+    void LidarMatcher::imuinfoCb(const sensor_msgs::ImuConstPtr  msg)
     {
         imuInfoPool_.push_back(*msg);
     }

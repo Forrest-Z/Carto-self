@@ -2,15 +2,14 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-11 14:18:29
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-29 07:06:08
+ * @LastEditTime: 2020-10-02 18:55:18
  * @Description: LinearEstimator 函数定义
  */
 
 #pragma once
 
 #include <iostream>
-#include <glog/logging.h>
-#include "linear_estimator.hpp"
+#include "tools/pose_extrapolator/linear_estimator.hpp"
 
 namespace LwlSLAM
 {   

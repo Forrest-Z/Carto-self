@@ -2,11 +2,11 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-07 10:40:54
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-10 08:54:49
+ * @LastEditTime: 2020-10-04 22:39:04
  * @Description: 用于概率栅格地图的函数定义
  */
 
-#include "mapping_structure.hpp"
+#include "tools/structure/mapping_structure.hpp"
 
 namespace LwlSLAM
 {
@@ -28,12 +28,6 @@ namespace LwlSLAM
         return (x<scaleXY_.x())&&(y<scaleXY_.y())&&(x>=0)&&(y>=0);
     }
 
-    template<typename T>
-    bool MapLimits::contain(T xy) const{
-        int x = xy(0);
-        int y = xy(1);
-        return (x<scaleXY_.x())&&(y<scaleXY_.y())&&(x>=0)&&(y>=0);
-    }
 
     void MapLimits::setLimits(int x,int y){
         CHECK(x>0);
@@ -44,10 +38,10 @@ namespace LwlSLAM
     /**
      * @brief 以下定义ProbabilityGridMap
     */
-    uint16_t kUpdateMaker = uint16_t(1)<<15;
-    bool ProbabilityGridMap::initializationFlag_;
-    std::string ProbabilityGridMap::paramFile_;
 
+    bool ProbabilityGridMap::initializationFlag_ = false;
+        
+    std::string ProbabilityGridMap::paramFile_="";
 
     ProbabilityParameters ProbabilityGridMap::probabilityparameter_;
     std::vector<uint16_t> ProbabilityGridMap::hitAddChartProbability_;
@@ -135,39 +129,12 @@ namespace LwlSLAM
         laserCount_ += 1;
         for (auto & element: CorrespondenceCostValue_)
         {
-        if (element >kUpdateMaker)
-            element -= kUpdateMaker;
+        if (element >getkUpdateMaker())
+            element -= getkUpdateMaker();
         }
     }
 
-    void ProbabilityGridMap::addHit(int x,int y){
-        
-        CHECK(mapLimits_.contain(x-scale_.min()(0),y-scale_.min()(1)));
-        if(CorrespondenceCostValue_[mapLimits_.getCellIndex(x,y)]<kUpdateMaker)
-        CorrespondenceCostValue_[mapLimits_.getCellIndex(x,y)] = 
-        hitAddChartCorrespondenceCost_[CorrespondenceCostValue_[mapLimits_.getCellIndex(x,y)]];
-    }
 
-    void ProbabilityGridMap::addMiss(int x,int y){
-        CHECK(mapLimits_.contain(x-scale_.min()(0),y-scale_.min()(1)));
-        if(CorrespondenceCostValue_[mapLimits_.getCellIndex(x,y)]<kUpdateMaker)
-        CorrespondenceCostValue_[mapLimits_.getCellIndex(x,y)] = 
-        missAddChartCorrespondenceCost_[CorrespondenceCostValue_[mapLimits_.getCellIndex(x,y)]];
-    }
-
-    template <typename T>
-    void ProbabilityGridMap::addHit(T xy){
-        if(CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))]<kUpdateMaker)
-        CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))] = 
-        hitAddChartCorrespondenceCost_[CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))]];
-    }
-
-    template <typename T>
-    void ProbabilityGridMap::addMiss(T xy){
-        if(CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))]<kUpdateMaker)
-        CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))] = 
-        missAddChartCorrespondenceCost_[CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))]];
-    }
 
     void ProbabilityGridMap::checkInitialization(){
         CHECK(initializationFlag_==true);
@@ -191,6 +158,7 @@ namespace LwlSLAM
             ComputetoApplyCorrespondenceCostChart();
             
             initializationFlag_ = true;
+
         }
     }
 
@@ -231,11 +199,11 @@ namespace LwlSLAM
         {
             // hitOdd
             hitAddChartProbability_.push_back(ProbabilityToValue
-            (ProbabilityFromOdd(Odd(elem)*probabilityparameter_.hitOdd))+kUpdateMaker);
+            (ProbabilityFromOdd(Odd(elem)*probabilityparameter_.hitOdd))+getkUpdateMaker());
 
             // missOdd
             missAddChartProbability_.push_back(ProbabilityToValue
-            (ProbabilityFromOdd(Odd(elem)*probabilityparameter_.missOdd))+kUpdateMaker);
+            (ProbabilityFromOdd(Odd(elem)*probabilityparameter_.missOdd))+getkUpdateMaker());
         }
         
         CHECK(hitAddChartProbability_.size()==(uint16_t(1)<<15));
@@ -250,10 +218,10 @@ namespace LwlSLAM
         for(auto elem:ProbabilityTable_)
         {
             //hitOdd
-            hitAddChartCorrespondenceCost_.push_back(kUpdateMaker+CorrespondenceCostToValue
+            hitAddChartCorrespondenceCost_.push_back(getkUpdateMaker()+CorrespondenceCostToValue
             (1.f-ProbabilityFromOdd(Odd(1.f-elem)*probabilityparameter_.hitOdd)));
             //missOdd
-            missAddChartCorrespondenceCost_.push_back(kUpdateMaker+CorrespondenceCostToValue
+            missAddChartCorrespondenceCost_.push_back(getkUpdateMaker()+CorrespondenceCostToValue
             (1.f-ProbabilityFromOdd(Odd(1.f-elem)*probabilityparameter_.missOdd)));
         }
     }

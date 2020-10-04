@@ -12,8 +12,9 @@
 #include <algorithm>
 #include <math.h>
 
-#include "mapping_structure.hpp"
-#include "matching_structure.hpp"
+#include "glog/logging.h"
+#include "tools/structure/mapping_structure.hpp"
+#include "tools/structure/matching_structure.hpp"
 #include "common.hpp"
 
 #include "sensor_msgs/LaserScan.h"
@@ -34,7 +35,7 @@ namespace LwlSLAM
             CHECK(initialFlag_ ==false);
         }
 
-        auto pipeline(const ProbabilityGridMap & submap, 
+        LwlSLAM::MatchResult pipeline(const ProbabilityGridMap & submap, 
         const Eigen::Vector3f & posePrediction, const sensor_msgs::LaserScan & laserInfo);
 
         const MatchResult & getResult();

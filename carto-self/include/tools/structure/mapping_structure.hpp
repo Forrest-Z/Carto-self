@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-05 15:39:10
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-25 07:06:16
+ * @LastEditTime: 2020-10-04 22:38:24
  * @Description: 文件用于定义 地图的类型 目前之后 概率栅格地图
  */
 
@@ -48,9 +48,12 @@ namespace LwlSLAM
 
         bool contain(int x, int y) const;
         
-        template <typename T>
-        bool contain(T xy)const;
-
+        template<typename T>
+        bool contain(T xy) const{
+            int x = xy(0);
+            int y = xy(1);
+            return (x<scaleXY_.x())&&(y<scaleXY_.y())&&(x>=0)&&(y>=0);
+        }
         private:
 
         double gird_size_;
@@ -153,6 +156,13 @@ namespace LwlSLAM
 
         static const ProbabilityParameters & getProbabilityParameters(){return probabilityparameter_;}
 
+        static uint16_t getkUpdateMaker()
+        {
+            static uint16_t kUpdateMaker = uint16_t(1)<<15;
+            return kUpdateMaker;
+        }
+
+
         std::vector<uint16_t> CorrespondenceCostValue_;
 
         int seq_;
@@ -163,10 +173,10 @@ namespace LwlSLAM
         Eigen::AlignedBox2i scale_;
         Eigen::Vector2i poseOffset_;
         
-        
-        static bool initializationFlag_;
-        static std::string paramFile_;
 
+        static bool initializationFlag_ ;
+            
+        static std::string paramFile_;
         static ProbabilityParameters probabilityparameter_;
         static std::vector<uint16_t> hitAddChartProbability_;
         static std::vector<uint16_t> missAddChartProbability_;
@@ -175,5 +185,19 @@ namespace LwlSLAM
         static std::vector<float>    ProbabilityTable_;
 
     };
+
+    template <typename T>
+    void ProbabilityGridMap::addHit(T xy){
+        if(CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))]<getkUpdateMaker())
+        CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))] = 
+        hitAddChartCorrespondenceCost_[CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))]];
+    }
+
+    template <typename T>
+    void ProbabilityGridMap::addMiss(T xy){
+        if(CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))]<getkUpdateMaker())
+        CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))] = 
+        missAddChartCorrespondenceCost_[CorrespondenceCostValue_[mapLimits_.getCellIndex(xy(0),xy(1))]];
+    }
 
 }; // namespace LwlSLAM

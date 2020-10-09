@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-10-02 11:41:15
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-10-02 13:45:02
+ * @LastEditTime: 2020-10-06 11:07:21
  * @Description: rosbag_io 进行rosbag 数据读取
  */
 
@@ -11,7 +11,8 @@
 #include <rosbag/bag.h>
 #include <rosbag/view.h>
 
-
+namespace LwlSLAM
+{
 
 class RosbagIn
 {
@@ -30,7 +31,6 @@ class RosbagIn
     template <typename T>
     void FetchInfo(const std::string & topic_name,unsigned int size, std::vector<T> & output)
     {
-        
         std::vector<std::string> topics {topic_name.c_str()};
         rosbag::View view(bag_,rosbag::TopicQuery(topics));
         unsigned int count = 1;
@@ -40,7 +40,7 @@ class RosbagIn
 
         for(auto & element:view)
         {
-            typename T::CpnstPtr ptr_instaniate;
+            typename T::ConstPtr ptr_instaniate;
             ptr_instaniate = element.instantiate<T>();
             if(ptr_instaniate!=NULL)
             {
@@ -64,3 +64,4 @@ class RosbagIn
     rosbag::Bag bag_;
 
 };
+}

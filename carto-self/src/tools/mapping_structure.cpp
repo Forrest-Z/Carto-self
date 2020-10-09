@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-07 10:40:54
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-10-04 22:39:04
+ * @LastEditTime: 2020-10-10 07:40:31
  * @Description: 用于概率栅格地图的函数定义
  */
 
@@ -51,6 +51,7 @@ namespace LwlSLAM
     std::vector<float>    ProbabilityGridMap::ProbabilityTable_;
 
     void ProbabilityGridMap::initialTable(){
+       
         CHECK(!scale_.isEmpty());
         
         auto BottomLeft = scale_.min();
@@ -136,8 +137,8 @@ namespace LwlSLAM
 
 
 
-    void ProbabilityGridMap::checkInitialization(){
-        CHECK(initializationFlag_==true);
+    bool ProbabilityGridMap::checkInitialization(){
+        return initializationFlag_;
     }
 
     void ProbabilityGridMap::initial(){

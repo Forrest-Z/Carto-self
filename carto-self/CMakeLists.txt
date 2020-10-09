@@ -2,7 +2,9 @@ cmake_minimum_required(VERSION 3.5)
 project(carto-self)
 
 set(CMAKE_CXX_FLAGS "-std=c++11")
-set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_BUILD_TYPE "Debug")
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY executable)
 ## Compile as C++11, supported in ROS Kinetic and newer
 
 
@@ -43,53 +45,6 @@ find_package(Ceres REQUIRED)
 find_package(GTest REQUIRED)
 find_package(Threads REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
-
-
-
-
-## YAML_CPP_FOUND 好像没有设置
-# if(YAML_CPP_FOUND)
-# message(STATUS "the yaml_cpp has been found!!")
-# endif()
-
-## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
-
-## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
-#   Message1.msg
-#   Message2.msg
-# )
-
-## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
-
-## Generate actions in the 'action' folder
-# add_action_files(
-#   FILES
-#   Action1.action
-#   Action2.action
-# )
-
-## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
-
-
-
-## Generate dynamic reconfigure parameters in the 'cfg' folder
-# generate_dynamic_reconfigure_options(
-#   cfg/DynReconf1.cfg
-#   cfg/DynReconf2.cfg
-# )
 
 ###################################
 ## catkin specific configuration ##
@@ -151,9 +106,12 @@ add_executable(rosbag_convert src/tools/rosbag_convert_node.cpp)
 
 
 add_executable(linear_estimator_test src/test/linear_estimator_test.cpp ${ALL_SRC}
-
 )
-target_link_libraries(linear_estimator_test 
+add_executable(rosbag_io_test src/test/rosbag_io_test.cpp ${ALL_SRC})
+
+add_executable(grid_generator_test src/test/grid_generator_test.cpp ${ALL_SRC})
+
+target_link_libraries(grid_generator_test 
 ${GTEST_BOTH_LIBRARIES} 
 ${CMAKE_THREAD_LIBS_INIT}
 ${catkin_LIBRARIES}
@@ -161,6 +119,20 @@ ${YAML_CPP_LIBRARIES}
 glog
 )
 
+target_link_libraries(linear_estimator_test 
+${GTEST_BOTH_LIBRARIES} 
+${CMAKE_THREAD_LIBS_INIT}
+${catkin_LIBRARIES}
+${YAML_CPP_LIBRARIES}
+glog
+)
+target_link_libraries(rosbag_io_test 
+${GTEST_BOTH_LIBRARIES} 
+${CMAKE_THREAD_LIBS_INIT}
+${catkin_LIBRARIES}
+${YAML_CPP_LIBRARIES}
+glog
+)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the

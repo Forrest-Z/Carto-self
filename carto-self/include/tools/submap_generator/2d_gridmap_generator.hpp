@@ -39,6 +39,11 @@ namespace LwlSLAM
 
         void pipeline(sensor_msgs::LaserScan& laserInfo,Eigen::Vector3f pose);
 
+
+        const float getPixelSize() const
+        {
+            return pixelSize_;
+        }
         const ProbabilityGridMap & getGridMap(uint16_t seq){
             CHECK(seq<submapPool_.size());
             return submapPool_[seq];

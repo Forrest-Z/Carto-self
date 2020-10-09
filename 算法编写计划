@@ -1,10 +1,21 @@
 ### LocalMatcher 
     1. 编写好local_matcher pipeline 
     2. 对各个模块进行单元测试
-        |__ linear esitmator
+        |__ linear esitmator 完成
            |__ 边界测试
            |__ 估计测试
            |__ 时间使用 sec nsec测试 问题不大
+        |__ mapGenerator 
+           |__ 编写 Rosbag_io 完成
+           |__ 编写 display 代码 
+           |__ 地图生成检测
+           |__ 平移 旋转 地图扩展检测
+           |__ serialization 编写 用于matcher 使用
+           |__ 测试 生成概率table
+        |__ 2dscanmatcher
+           |__ CorrelativeScanMatcher
+           |__ CeresScanMatcher 
+        
     
     3. 将命名方式全部改为Cartographer 的谷歌系表示 (第二阶段)
 

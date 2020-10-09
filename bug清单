@@ -8,3 +8,6 @@
 3. typename 的作用：是告诉编译器 这是一个类别而不是一个对象
    typename 在模板编程的时候非常重要，很容易出现编译器根本不知道这是个什么东西的情况
    typedef 是创造一个别名
+
+4. ALL_SRC 包含了所有的文件 所以 target_link的时候 需要把所有的库链接上
+   (不在BugFreePlan中)

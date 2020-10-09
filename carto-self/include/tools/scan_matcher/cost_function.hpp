@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-16 06:57:39
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-09-27 06:49:35
+ * @LastEditTime: 2020-10-10 06:57:09
  * @Description: 包含CostFunction的头文件
  */
 
@@ -117,10 +117,10 @@ namespace LwlSLAM
             double fc[4]{0,0,0,0};
             for (int i = -1;i<3;i++)
             {
-                p0 = 1-submap_.getProbability(r_+i,c_-1);
-                p1 = 1-submap_.getProbability(r_+i,c_);
-                p2 = 1-submap_.getProbability(r_+i,c_+1);
-                p3 = 1-submap_.getProbability(r_+i,c_+2);
+                p0 = 1-submap_.getCorrespendence(r_+i,c_-1);
+                p1 = 1-submap_.getCorrespendence(r_+i,c_);
+                p2 = 1-submap_.getCorrespendence(r_+i,c_+1);
+                p3 = 1-submap_.getCorrespendence(r_+i,c_+2);
                 double p[4]{p0,p1,p2,p3};
                 bicubicInterpolator(p,delta_c,fc+i,dfdc+i);
             }

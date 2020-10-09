@@ -51,8 +51,8 @@ namespace LwlSLAM
 
         for(auto PointXYZ:tmpMidProductRawPoint_)
         {
-            int x_t = std::ceil(PointXYZ.x()/gridSize_);
-            int y_t = std::ceil(PointXYZ.y()/gridSize_);
+            int x_t = std::floor(PointXYZ.x()/gridSize_);
+            int y_t = std::floor(PointXYZ.y()/gridSize_);
 
             
             KeyType x_bit = static_cast<uint64_t>(x_t);

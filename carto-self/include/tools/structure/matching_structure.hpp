@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-10 10:44:27
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-10-03 10:28:11
+ * @LastEditTime: 2020-10-05 12:36:15
  * @Description: 用于ScanMatcher 的结构
  */
 #pragma once 
@@ -47,9 +47,9 @@ namespace LwlSLAM
     struct PoseInfo
     {
         PoseInfo(){
-            seq = 0;
-            sec = 0;
-            nsec = 0;
+            seq = 0.0;
+            sec = 0.0;
+            nsec = 0.0;
             pose.Zero();
             velocity.Zero();
         };

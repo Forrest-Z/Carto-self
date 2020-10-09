@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-04 15:02:56
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-10-03 17:12:26
+ * @LastEditTime: 2020-10-10 07:39:33
  * @Description: 定义GridMapGenerator2d 的成员函数
  */
 
@@ -28,8 +28,8 @@ namespace LwlSLAM
     void GridMapGenerator2d::initial(){
         
         // 参数读取
-        // TODO filename改为读取 而不是直接的赋值
-        
+
+        try{
         YAML::Node config= YAML::LoadFile(configFile_.c_str());
         
         submapCapacity_ = config["SubmapParams"]["Capacity"].as<int>();
@@ -38,7 +38,13 @@ namespace LwlSLAM
 
         // 这个数值直接控制分辨率
         discreteInterval_ = config["SubmapParams"]["disInterval"].as<float>();
+        }
+        catch(...)
+        {
+            LOG(INFO)<<"in GridMapGenerator2d initial(): there is something wrong with the yaml file";
+        }
 
+        
         submapPool_.clear();
     };
 

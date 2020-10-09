@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-08 16:07:17
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-10-03 17:11:04
+ * @LastEditTime: 2020-10-10 07:15:54
  * @Description: common 文件夹用于处理一些常用的函数  range_to_xyz 主要是用于处理 从 range 到Eigen 库内容的转换
  */
 
@@ -74,7 +74,7 @@ namespace LwlSLAM
 
         for(auto & vector:input)
         {
-            output.push_back(OutputType(std::ceil(vector(0)/interval),std::ceil(vector(1)/interval)));
+            output.push_back(OutputType(std::floor(vector(0)/interval),std::floor(vector(1)/interval)));
         }
     }
 
@@ -86,8 +86,17 @@ namespace LwlSLAM
     {
         output.Zero();
 
-        output = OutputType(std::ceil(input(0)/interval),std::ceil(input(1)/interval));
+        output = OutputType(std::floor(input(0)/interval),std::floor(input(1)/interval));
     }
 
+    template <typename T,int N>
+    void findMaxAndMin(std::vector<Eigen::Matrix<T,N,1>> matix_array,
+                       Eigen::Matrix<T,N,1> max, 
+                       Eigen::Matrix<T,N,1> min)
+    {
+        
+    }
+
+    
 } // namespace LwlSLAM
 

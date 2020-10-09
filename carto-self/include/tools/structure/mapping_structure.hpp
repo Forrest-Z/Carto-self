@@ -2,7 +2,7 @@
  * @Author: Liu Weilong
  * @Date: 2020-09-05 15:39:10
  * @LastEditors: Liu Weilong
- * @LastEditTime: 2020-10-04 22:38:24
+ * @LastEditTime: 2020-10-10 07:43:25
  * @Description: 文件用于定义 地图的类型 目前之后 概率栅格地图
  */
 
@@ -75,7 +75,11 @@ namespace LwlSLAM
         
         ProbabilityGridMap(int seq):seq_(seq){
 
-            checkInitialization();
+            if(!checkInitialization())
+            {
+                initial();
+                LOG(INFO)<<"in ProbabilityGridMap ctor:complete the initialization";
+            }
             CorrespondenceCostValue_.clear();
             mapLimits_.setLimits(0,0);
             pose_.Zero();
@@ -109,8 +113,13 @@ namespace LwlSLAM
 
         inline void setLaserCount(int i){laserCount_ = i;}
         
+
         inline const float getProbability(uint16_t x, uint16_t y)const{
             return 1-ProbabilityTable_[CorrespondenceCostValue_[mapLimits_.getCellIndex(x,y)]];
+        }
+
+        inline const float getCorrespendence(uint16_t x , uint16_t y) const{
+            return ProbabilityTable_[CorrespondenceCostValue_[mapLimits_.getCellIndex(x,y)]];
         }
 
         const int getLaserCount()const {return laserCount_;}
@@ -126,7 +135,7 @@ namespace LwlSLAM
          * @brief 以下属于概率内部运算
          */
         
-        static void checkInitialization();
+        static bool checkInitialization();
         
         static void initial();
         
